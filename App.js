@@ -31,7 +31,7 @@ export default function App() {
       cache,
       ...apolloClientOptions
     });
-    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");
+    const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");//AsyncStorage로 체크한다.localstorage랑 비슷한데 폰에서 동작하는거다
     if(isLoggedIn===null||isLoggedIn===false){
       setIsLoggedIn(false);
     }
