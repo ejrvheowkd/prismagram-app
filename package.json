@@ -9,10 +9,17 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.2.1",
+    "@react-native-community/async-storage": "^1.12.1",
     "@types/expo": "^33.0.1",
+    "add": "^2.0.6",
+    "apollo-boost": "^0.4.9",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-cache-persist": "^0.1.1",
     "expo": "~39.0.2",
     "expo-status-bar": "~1.0.2",
+    "graphql": "^15.3.0",
     "react": "16.13.1",
+    "react-apollo-hooks": "^0.5.0",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
     "react-native-web": "~0.13.12"
