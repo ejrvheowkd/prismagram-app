@@ -12,10 +12,11 @@ import {ApolloProvider} from 'react-apollo-hooks';
 import AsyncStorage from "@react-native-community/async-storage";
 import {ThemeProvider} from "styled-components";
 import styles from './styles';
+import NavController from './Components/NavController';
+import { AuthProvider } from './AuthContext';
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client,setClient] = useState(null);
-  const [isLoggedIn,setIsLoggedIn]=useState(null);//fasle는 내가 체크했고 로그아웃상태고 true는 체크했고 로그인 이를위해 null사용
   const preLoad = async () => {
     try {
       await Font.loadAsync({
@@ -32,13 +33,6 @@ export default function App() {
       ...apolloClientOptions
     });
     const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");//AsyncStorage로 체크한다.localstorage랑 비슷한데 폰에서 동작하는거다
-    if(isLoggedIn===null||isLoggedIn==="false"){
-      setIsLoggedIn(false);
-    }
-    else
-    {
-      setIsLoggedIn(true);
-    }
       setLoaded(true);
       setClient(client);
     } catch (e) {
@@ -48,37 +42,13 @@ export default function App() {
   useEffect(() => {
     preLoad();
   }, []);
-  const logUserIn =async () =>{
-    try{
-      await AsyncStorage.setItem("isLoggedIn","true");
-      setIsLoggedIn(true);
-    }catch(e){
-      console.log(e);
-    }
-  }
-
-  const logUserOut =async ()=>{
-    try{
-      await AsyncStorage.setItem("isLoggedIn","false");
-      setIsLoggedIn(false);
-    }catch(e){
-      console.log(e);
-    }
-  }
-
-  return loaded&&client&& isLoggedIn !== null ? (
+ 
+  return loaded&&client?(
     <ApolloProvider client={client}>
       <ThemeProvider theme={styles}>
-    <View
-    style ={{flex:1,justifyContent:"center",alignItems:"center"}}>
-    {isLoggedIn===true? 
-    <TouchableOpacity onPress={logUserOut}>
-      <Text>Log Out</Text>
-      </TouchableOpacity>:
-    <TouchableOpacity onPress={logUserIn}>
-      <Text>Log In</Text>
-      </TouchableOpacity>}
-    </View>
+        <AuthProvider>
+    <NavController/>
+    </AuthProvider>
     </ThemeProvider>
     </ApolloProvider>
   ) : (
