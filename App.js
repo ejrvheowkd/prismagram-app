@@ -17,6 +17,7 @@ import { AuthProvider } from './AuthContext';
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [client,setClient] = useState(null);
+  const [isLoggedIn,setIsLoggedIn] = useState(null);
   const preLoad = async () => {
     try {
       await Font.loadAsync({
@@ -33,7 +34,14 @@ export default function App() {
       ...apolloClientOptions
     });
     const isLoggedIn = await AsyncStorage.getItem("isLoggedIn");//AsyncStorage로 체크한다.localstorage랑 비슷한데 폰에서 동작하는거다
-      setLoaded(true);
+    if(!isLoggedIn||isLoggedIn==="false"){
+      setIsLoggedIn(false);
+    } 
+    else
+    {
+      setIsLoggedIn(true);
+    }
+    setLoaded(true);
       setClient(client);
     } catch (e) {
       console.log(e);
@@ -43,10 +51,10 @@ export default function App() {
     preLoad();
   }, []);
  
-  return loaded&&client?(
+  return loaded&&client&&isLoggedIn!==null?(
     <ApolloProvider client={client}>
       <ThemeProvider theme={styles}>
-        <AuthProvider>
+        <AuthProvider isLoggedIn={isLoggedIn}>
     <NavController/>
     </AuthProvider>
     </ThemeProvider>
